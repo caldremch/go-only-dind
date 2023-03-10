@@ -20,7 +20,7 @@ USER root:${DOCKER_GID}
 # 安装必要的依赖包
 RUN apk add --no-cache curl tar gzip
 
-COPY go1.18.2.linux-amd64.tar.gz /tmp/go.tar.gz
+RUN curl -L -o /tmp/go.tar.gz https://golang.org/dl/go1.18.2.linux-amd64.tar.gz
 
 # 下载并解压 GoLand 安装包
 RUN tar -C /usr/local -xzf /tmp/go.tar.gz && \
@@ -29,7 +29,7 @@ RUN tar -C /usr/local -xzf /tmp/go.tar.gz && \
 # 设置环境变量
 ENV PATH="/usr/local/go/bin:${PATH}"
 
-VOLUME ['/app/build',"/var/run"]
+VOLUME ['/app/build',"/var/run", "project-cache", "build-cache"]
 #RUN docker images
 RUN nohup daemon_proccess.sh &
 #ENTRYPOINT [ "sh", "daemon_proccess.sh" ]
